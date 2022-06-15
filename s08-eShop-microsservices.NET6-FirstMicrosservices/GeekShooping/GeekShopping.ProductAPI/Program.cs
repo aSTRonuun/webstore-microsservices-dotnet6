@@ -2,6 +2,8 @@ using AutoMapper;
 using GeekShopping.ProductAPI.Config;
 using GeekShopping.ProductAPI.Model.Context;
 using GeekShopping.ProductAPI.Repository;
+using GeekShopping.Web.Models.Services;
+using GeekShopping.Web.Models.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,10 @@ builder.Services.AddDbContext<MySQLContext>(options =>
     options.UseMySql(connection,
         new MySqlServerVersion(
             new Version(8,0,5))));
+
+builder.Services.AddHttpClient<IProductService, ProductService>(c =>
+    c.BaseAddress = new Uri(builder.Configuration["ServiveUrls:ProductAPI"])
+);
 
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
