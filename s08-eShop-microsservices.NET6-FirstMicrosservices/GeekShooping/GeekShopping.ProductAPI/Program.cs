@@ -28,7 +28,7 @@ builder.Services.AddHttpClient<IProductService, ProductService>(c =>
 
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper;
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
