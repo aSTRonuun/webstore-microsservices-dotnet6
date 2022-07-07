@@ -26,7 +26,7 @@ public class ProductService : IProductService
     }
     public async Task<ProductModel> CreateProduct(ProductModel model)
     {
-        var response = await _client.PostAsJson(BasePath, );
+        var response = await _client.PostAsJson(BasePath, model);
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<ProductModel>();
         else throw new Exception("Something wnt wrong when calling API");
