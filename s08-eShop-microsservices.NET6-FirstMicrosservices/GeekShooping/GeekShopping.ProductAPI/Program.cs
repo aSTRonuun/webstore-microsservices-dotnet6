@@ -23,7 +23,7 @@ builder.Services.AddDbContext<MySQLContext>(options =>
             new Version(8,0,5))));
 
 builder.Services.AddHttpClient<IProductService, ProductService>(c =>
-    c.BaseAddress = new Uri(builder.Configuration["ServiveUrls:ProductAPI"])
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"])
 );
 
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
