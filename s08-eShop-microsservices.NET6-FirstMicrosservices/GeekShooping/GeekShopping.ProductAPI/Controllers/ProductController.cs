@@ -1,8 +1,13 @@
-﻿using GeekShopping.ProductAPI.Data.ValueObject;
+﻿using GeekShopping.ProductAPI.Data.ValueObjects;
 using GeekShopping.ProductAPI.Repository;
 using GeekShopping.ProductAPI.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GeekShopping.ProductAPI.Controllers
 {
@@ -14,7 +19,8 @@ namespace GeekShopping.ProductAPI.Controllers
 
         public ProductController(IProductRepository repository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _repository = repository ?? throw new
+                ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
@@ -22,7 +28,6 @@ namespace GeekShopping.ProductAPI.Controllers
         public async Task<ActionResult<IEnumerable<ProductVO>>> FindAll()
         {
             var products = await _repository.FindAll();
-
             return Ok(products);
         }
 
@@ -32,7 +37,6 @@ namespace GeekShopping.ProductAPI.Controllers
         {
             var product = await _repository.FindById(id);
             if (product == null) return NotFound();
-
             return Ok(product);
         }
 

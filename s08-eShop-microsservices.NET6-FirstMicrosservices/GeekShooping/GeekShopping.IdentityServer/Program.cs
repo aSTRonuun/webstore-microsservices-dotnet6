@@ -1,55 +1,26 @@
-using GeekShopping.IdentityServer.Configuration;
-using GeekShopping.IdentityServer.Models;
-using GeekShopping.IdentityServer.Models.Context;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
-builder.Services.AddDbContext<MySQLContext>(options =>
-    options.UseMySql(connection,
-        new MySqlServerVersion(
-            new Version(8, 0, 5))));
-
-builder.Services.AddIdentity<AplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<MySQLContext>()
-    .AddDefaultTokenProviders();
-var builderIdentity = builder.Services.AddIdentityServer(options =>
+namespace GeekShopping.IdentityServer
 {
-    options.Events.RaiseErrorEvents = true;
-    options.Events.RaiseInformationEvents = true;
-    options.Events.RaiseFailureEvents = true;
-    options.Events.RaiseSuccessEvents = true;
-    options.EmitStaticAudienceClaim = true;
-}).AddInMemoryIdentityResources(IdentityConfiguration.IdentityResources)
-    .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
-    .AddInMemoryClients(IdentityConfiguration.Clients)
-    .AddAspNetIdentity<AplicationUser>();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-builderIdentity.AddDeveloperSigningCredential();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 }
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseIdentityServer();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
