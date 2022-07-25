@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GeekShpping.CartAPI.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekShopping.CartAPI.Model.Context
 {
@@ -8,5 +9,7 @@ namespace GeekShopping.CartAPI.Model.Context
         public MySQLContext(DbContextOptions<MySQLContext> options) : base(options) {}
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<CartDetail> CartDetails { get; set; }
+        public DbSet<CartHeader> CartHeaders { get; set; }
     }
 }
