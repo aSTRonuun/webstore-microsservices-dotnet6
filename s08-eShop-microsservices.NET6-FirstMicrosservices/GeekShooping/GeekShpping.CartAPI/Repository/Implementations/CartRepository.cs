@@ -97,7 +97,7 @@ public class CartRepository : ICartRepository
             // Create CartHeader and CartDetails
             _context.CartHeaders.Add(cart.CartHeader);
             await _context.SaveChangesAsync();
-            cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+            cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
             cart.CartDetails.FirstOrDefault().Product = null;
             _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
         } else
@@ -105,7 +105,7 @@ public class CartRepository : ICartRepository
             // If CartHeader is not null
             // Check if CartDetails has same product
             var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(
-                p => p.ProductId == vo.CartDetails.FirstOrDefault().ProductId && p.CartHeaderId == cartHeader.Id);
+                p => p.ProductId == cart.CartDetails.FirstOrDefault().ProductId && p.CartHeaderId == cartHeader.Id);
 
             if (cartDetail == null)
             {
