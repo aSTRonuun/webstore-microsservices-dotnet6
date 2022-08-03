@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace GeekShpping.Web.Models;
-
-public class CartViewModel
+namespace GeekShopping.Web.Models
 {
-    public CartHeaderViewModel CartHeader { get; set; }
-
-    public IEnumerable<CartDetailViewModel> CartDetails { get; set; }
+    public class CartViewModel
+    {
+        public CartHeaderViewModel CartHeader { get; set; }
+        public IEnumerable<CartDetailViewModel> CartDetails { get; set; }
+    }
 }

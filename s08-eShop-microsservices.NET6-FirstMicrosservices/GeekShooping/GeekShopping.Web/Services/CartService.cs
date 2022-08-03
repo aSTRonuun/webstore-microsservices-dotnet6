@@ -1,9 +1,12 @@
-﻿using GeekShopping.Web.Services.IServices;
+﻿using GeekShopping.Web.Models;
+using GeekShopping.Web.Services.IServices;
 using GeekShopping.Web.Utils;
-using GeekShpping.Web.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GeekShopping.Web.Services
@@ -28,7 +31,7 @@ namespace GeekShopping.Web.Services
         public async Task<CartViewModel> AddItemToCart(CartViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _client.PostAsJson($"{BasePath}/add-cart/", model);
+            var response = await _client.PostAsJson($"{BasePath}/add-cart", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<CartViewModel>();
             else throw new Exception("Something went wrong when calling API");
@@ -37,7 +40,7 @@ namespace GeekShopping.Web.Services
         public async Task<CartViewModel> UpdateCart(CartViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _client.PutAsJson($"{BasePath}/update-cart/", model);
+            var response = await _client.PutAsJson($"{BasePath}/update-cart", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<CartViewModel>();
             else throw new Exception("Something went wrong when calling API");
@@ -52,24 +55,24 @@ namespace GeekShopping.Web.Services
             else throw new Exception("Something went wrong when calling API");
         }
 
-        public Task<bool> ApplyCoupon(CartViewModel cart, string couponCode, string token)
+        public async Task<bool> ApplyCoupon(CartViewModel cart, string couponCode, string token)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
+        public async Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Task<bool> ClearCart(string userId, string token)
+        public async Task<bool> ClearCart(string userId, string token)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveCoupon(string userId, string token)
+        public async Task<bool> RemoveCoupon(string userId, string token)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
