@@ -29,7 +29,7 @@ public class CartController : ControllerBase
     public async Task<ActionResult<CartVO>> AddCart(CartVO vo)
     {
         var cart = await _repository.SaveOrUpdateCart(vo);
-        if (cart == null) return NotFound();
+        if (cart == null) return BadRequest();
         return Ok(cart);
     }
     

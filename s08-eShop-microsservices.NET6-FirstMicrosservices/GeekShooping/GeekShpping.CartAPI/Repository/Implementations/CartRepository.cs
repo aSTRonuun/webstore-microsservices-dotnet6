@@ -100,6 +100,7 @@ public class CartRepository : ICartRepository
             cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
             cart.CartDetails.FirstOrDefault().Product = null;
             _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
+            await _context.SaveChangesAsync();
         } else
         {
             // If CartHeader is not null
@@ -110,7 +111,7 @@ public class CartRepository : ICartRepository
             if (cartDetail == null)
             {
                 // Create CartDetails
-                cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                 cart.CartDetails.FirstOrDefault().Product = null;
                 _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                 await _context.SaveChangesAsync();
