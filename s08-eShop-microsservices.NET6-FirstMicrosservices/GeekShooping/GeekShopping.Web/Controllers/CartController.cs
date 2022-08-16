@@ -12,11 +12,13 @@ public class CartController : Controller
 {
     private readonly IProductService _productService;
     private readonly ICartService _cartService;
+    private readonly ICouponService _couponService;
 
-    public CartController(IProductService productService, ICartService cartService)
+    public CartController(IProductService productService, ICartService cartService, ICouponService couponService)
     {
         _productService = productService;
         _cartService = cartService;
+        _couponService = couponService;
     }
     
     [Authorize]
@@ -80,6 +82,13 @@ public class CartController : Controller
         return View();
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Checkout()
+    {
+
+        return View(await FindUserCart());
+    }
+
     private async Task<CartViewModel> FindUserCart()
     {
         var token = await HttpContext.GetTokenAsync("access_token");
@@ -90,10 +99,19 @@ public class CartController : Controller
 
         if (response?.CartHeader != null)
         {
+            if (!string.IsNullOrEmpty(response.CartHeader.CouponCode))
+            {
+                var coupon = await _couponService.GetCoupon(response.CartHeader.CouponCode, token);
+                if (coupon?.CouponCode != null)
+                {
+                    response.CartHeader.DiscountAmount = coupon.DiscountAmount;
+                }
+            }
             foreach (var detail in response.CartDetails)
             {
                 response.CartHeader.PurchaseAmount += (detail.Product.Price * detail.Count);
             }
+            response.CartHeader.PurchaseAmount -= response.CartHeader.DiscountAmount;
         }
 
         return response;
