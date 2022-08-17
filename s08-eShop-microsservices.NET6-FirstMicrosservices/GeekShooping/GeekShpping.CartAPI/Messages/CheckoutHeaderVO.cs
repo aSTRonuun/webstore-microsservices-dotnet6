@@ -1,8 +1,9 @@
-﻿using GeekShpping.CartAPI.Data.ValueObjects;
+﻿using GeekShopping.MessageBus;
+using GeekShpping.CartAPI.Data.ValueObjects;
 
 namespace GeekShpping.CartAPI.Messages
 {
-    public class CheckoutHeaderVO
+    public class CheckoutHeaderVO : BaseMessage
     {
         public long Id { get; set; }
         public string UserId { get; set; }
