@@ -72,6 +72,7 @@ public class CartController : ControllerBase
         var cart = await _repository.FindCartByUserId(vo.UserId);
         if (cart == null) return NotFound();
         vo.CartDetails = cart.CartDetails;
+        vo.DateTime = DateTime.Now;
 
         // Task RabbitMQ logic comes here!!
 

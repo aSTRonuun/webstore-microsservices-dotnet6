@@ -18,6 +18,6 @@ namespace GeekShpping.CartAPI.Messages
         public string CVV { get; set; }
         public string ExpiryMothYear { get; set; }
         public int CartTotalsItens { get; set; }
-        public IEnumerable<CartDetailVO> CartDetails { get; set; }
+        public IEnumerable<CartDetailVO>? CartDetails { get; set; }
     }
 }
