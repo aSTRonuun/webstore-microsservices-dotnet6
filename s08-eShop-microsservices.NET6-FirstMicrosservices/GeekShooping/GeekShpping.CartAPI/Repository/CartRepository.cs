@@ -2,9 +2,10 @@
 using GeekShopping.CartAPI.Model.Context;
 using GeekShpping.CartAPI.Data.ValueObjects;
 using GeekShpping.CartAPI.Model;
+using GeekShpping.CartAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace GeekShpping.CartAPI.Repository.Implementations;
+namespace GeekShpping.CartAPI.Repository;
 
 public class CartRepository : ICartRepository
 {
@@ -73,19 +74,20 @@ public class CartRepository : ICartRepository
         try
         {
             CartDetail cartDetail = await _context.CartDetails.FirstOrDefaultAsync(c => c.Id.Equals(cartDetaildsId));
-            
+
             int total = _context.CartDetails.Where(c => c.CartHeaderId == cartDetail.CartHeader.Id).Count();
 
             _context.CartDetails.Remove(cartDetail);
-            
-            if(total == 1)
+
+            if (total == 1)
             {
                 var cartHeaderToRemove = await _context.CartHeaders.FirstOrDefaultAsync(c => c.Id == cartDetail.CartHeaderId);
                 _context.CartHeaders.Remove(cartHeaderToRemove);
             }
             await _context.SaveChangesAsync();
             return true;
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return false;
         }
@@ -117,7 +119,8 @@ public class CartRepository : ICartRepository
             cart.CartDetails.FirstOrDefault().Product = null;
             _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
             await _context.SaveChangesAsync();
-        } else
+        }
+        else
         {
             // If CartHeader is not null
             // Check if CartDetails has same product
@@ -131,7 +134,8 @@ public class CartRepository : ICartRepository
                 cart.CartDetails.FirstOrDefault().Product = null;
                 _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                 await _context.SaveChangesAsync();
-            } else
+            }
+            else
             {
                 // Update product count and CartDetails
                 cart.CartDetails.FirstOrDefault().Product = null;

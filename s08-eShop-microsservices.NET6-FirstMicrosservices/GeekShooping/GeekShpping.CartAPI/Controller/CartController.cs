@@ -1,7 +1,7 @@
 ﻿using GeekShpping.CartAPI.Data.ValueObjects;
 using GeekShpping.CartAPI.Messages;
 using GeekShpping.CartAPI.RabbitMQSender;
-using GeekShpping.CartAPI.Repository;
+using GeekShpping.CartAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,6 +74,9 @@ public class CartController : ControllerBase
         if (vo?.UserId == null) return BadRequest();
         var cart = await _repository.FindCartByUserId(vo.UserId);
         if (cart == null) return NotFound();
+
+        
+        
         vo.CartDetails = cart.CartDetails;
         vo.DateTime = DateTime.Now;
 

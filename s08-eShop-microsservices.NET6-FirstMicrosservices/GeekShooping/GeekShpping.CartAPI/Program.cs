@@ -3,7 +3,7 @@ using GeekShopping.CartAPI.Config;
 using GeekShopping.CartAPI.Model.Context;
 using GeekShpping.CartAPI.RabbitMQSender;
 using GeekShpping.CartAPI.Repository;
-using GeekShpping.CartAPI.Repository.Implementations;
+using GeekShpping.CartAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
