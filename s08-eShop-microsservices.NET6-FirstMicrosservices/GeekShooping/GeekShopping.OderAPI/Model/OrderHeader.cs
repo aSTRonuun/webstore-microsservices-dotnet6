@@ -37,7 +37,7 @@ public class OrderHeader : BaseEntity
     [Column("total_itens")]
     public int CartTotalsItens { get; set; }
     [Column("cart_details")]
-    public IEnumerable<OrderDetail>? CartDetails { get; set; }
+    public List<OrderDetail>? OrderDetails { get; set; }
     [Column("payment_status")]
     public bool PaymentStatus { get; set; }
 }
