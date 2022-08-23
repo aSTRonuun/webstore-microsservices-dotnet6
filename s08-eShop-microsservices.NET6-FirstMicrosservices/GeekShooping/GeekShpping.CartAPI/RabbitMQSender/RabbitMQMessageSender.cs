@@ -19,9 +19,6 @@ namespace GeekShpping.CartAPI.RabbitMQSender
             _password = "guest";
             _userName = "guest";
         }
-
-
-
         public void SendMessage(BaseMessage message, string queueName)
         {
             var factory = new ConnectionFactory

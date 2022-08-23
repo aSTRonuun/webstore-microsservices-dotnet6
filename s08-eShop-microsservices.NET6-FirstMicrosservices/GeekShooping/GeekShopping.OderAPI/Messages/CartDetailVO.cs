@@ -1,10 +1,9 @@
-﻿namespace GeekShpping.CartAPI.Data.ValueObjects;
+﻿namespace GeekShpping.OderAPI.Messages;
 public class CartDetailVO
 {
     public long Id { get; set; }
     public long CartHeaderId { get; set; }
-    public CartHeaderVO? CartHeader { get; set; }
     public long ProductId { get; set; }
-    public ProductVO Product { get; set; }
+    public virtual ProductVO Product { get; set; }
     public int Count { get; set; }
 }
