@@ -95,10 +95,16 @@ public class CartController : Controller
         var token = await HttpContext.GetTokenAsync("access_token");
         var response = await _cartService.Checkout(model.CartHeader, token);
 
-        if (response != null)
+        if (response != null && response.GetType() == typeof(string))
+        {
+            TempData["Error"] = response;
+            return RedirectToAction(nameof(Checkout));
+
+        } 
+        else if (response != null)
         {
             return RedirectToAction(nameof(Confirmation));
-        }
+        } 
 
         return View(model);
     }
