@@ -1,24 +1,31 @@
 ﻿using AutoMapper;
+using GeekShopping.CartAPI.Data.ValueObjects;
 using GeekShpping.CartAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
-namespace GeekShopping.CartAPI.Repository
+namespace GeekShopping.CartAPI.Repository;
+
+public class CouponRepository : ICouponRepository
 {
-    public class CouponRepository : ICouponRepository
+    private readonly HttpClient _client;
+
+    public CouponRepository(HttpClient client)
     {
-        private readonly MySQLContext _context;
-        private IMapper _mapper;
+        _client = client;
+    }
 
-        public CouponRepository(MySQLContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
+    public async Task<CouponVO> GetCoupon(string couponCode, string token)
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var response = await _client.GetAsync($"api/v1/coupon/{couponCode}");
+        var content = await response.Content.ReadAsStringAsync();
 
-        public async Task<CouponVO> GetCouponByCouponCode(string couponCode, string token)
-        {
-            var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponCode == couponCode);
-            return _mapper.Map<CouponVO>(coupon);
-        }
+        if (response.StatusCode != HttpStatusCode.OK) return new CouponVO();
+        return JsonSerializer.Deserialize<CouponVO>(content,
+            new JsonSerializerOptions
+            { PropertyNameCaseInsensitive = true });
     }
 }
